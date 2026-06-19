@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Prototype</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --card-border: rgba(148, 163, 184, 0.2);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #7c3aed;
+      --button: #1e293b;
+      --button-hover: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 35%),
+        linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      border: 1px solid transparent;
+      background: var(--button);
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .tab.active,
+    .tab:hover {
+      background: var(--button-hover);
+      border-color: rgba(148, 163, 184, 0.25);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 1.15rem;
+      color: #fff;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: #7dd3fc;
+      font-size: 0.9rem;
+      margin-top: 14px;
+    }
+
+    .widget-list {
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 16px;
+    }
+
+    .widget-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(148, 163, 184, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .widget-list span:first-child {
+      color: #cbd5e1;
+    }
+
+    .widget-list span:last-child {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .settings-panel {
+      display: none;
+      grid-column: 1 / -1;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .settings-panel.active {
+      display: block;
+    }
+
+    .settings-panel h2 {
+      margin-top: 0;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-row label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #334155;
+      border-radius: 999px;
+      transition: background-color 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 3px;
+      background-color: #e2e8f0;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    input:checked + .slider {
+      background-color: #38bdf8;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      background: rgba(34, 197, 94, 0.14);
+      color: #8be9a1;
+      margin-top: 14px;
+    }
+
+    .mini-chart {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 1fr 80px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(124, 58, 237, 0.8));
+    }
+
+    .bar[data-width="80%"] { width: 80%; }
+    .bar[data-width="64%"] { width: 64%; }
+    .bar[data-width="49%"] { width: 49%; }
+    .bar[data-width="32%"] { width: 32%; }
+    .bar[data-width="17%"] { width: 17%; }
+
+    .note {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <p class="badge">Live prototype</p>
+        <h1>Agent Operations Dashboard</h1>
+        <p class="note">Monitor Projects, Active Agents, and customize widget visibility from settings.</p>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-section="dashboard">Dashboard</button>
+        <button class="tab" data-section="settings">Settings</button>
+      </div>
+    </header>
+
+    <section id="dashboard" class="dashboard-section">
+      <div class="grid">
+        <article class="card" id="widget-projects">
+          <h2>Agents Working on Projects</h2>
+          <p>Live view of agents assigned to current projects and the total number of active tasks.</p>
+          <div class="mini-chart">
+            <div class="bar-row"><span>AI Research</span><div class="bar" data-width="80%"></div></div>
+            <div class="bar-row"><span>UX Design</span><div class="bar" data-width="64%"></div></div>
+            <div class="bar-row"><span>Data Pipeline</span><div class="bar" data-width="49%"></div></div>
+            <div class="bar-row"><span>Automation</span><div class="bar" data-width="32%"></div></div>
+            <div class="bar-row"><span>Support</span><div class="bar" data-width="17%"></div></div>
+          </div>
+          <div class="status-pill">18 Agents active across 5 projects</div>
+        </article>
+
+        <article class="card" id="widget-totals">
+          <h2>Total Agents by Time</h2>
+          <p>Hourly distribution of agent availability and capacity across the current day.</p>
+          <div class="widget-list">
+            <li><span>08:00</span><span>6 Agents</span></li>
+            <li><span>10:00</span><span>9 Agents</span></li>
+            <li><span>12:00</span><span>14 Agents</span></li>
+            <li><span>14:00</span><span>11 Agents</span></li>
+          </div>
+          <p class="note">The chart reflects planned agent capacity for peak collaboration hours.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="settings" class="settings-panel">
+      <h2>Settings</h2>
+      <div class="toggle-row">
+        <label>
+          <span>Show "Agents Working on Projects" widget</span>
+          <span class="note">Toggle this widget on or off in the dashboard.</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="toggle-projects" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-row">
+        <label>
+          <span>Show "Total Agents by Time" widget</span>
+          <span class="note">Hide or show hourly agent totals.</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="toggle-totals" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <p class="note">Widget toggles update the dashboard instantly. Use the tabs above to switch between view and settings.</p>
+    </section>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const dashboardSection = document.getElementById('dashboard');
+    const settingsSection = document.getElementById('settings');
+    const toggleProjects = document.getElementById('toggle-projects');
+    const toggleTotals = document.getElementById('toggle-totals');
+    const widgetProjects = document.getElementById('widget-projects');
+    const widgetTotals = document.getElementById('widget-totals');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((btn) => btn.classList.remove('active'));
+        tab.classList.add('active');
+
+        if (tab.dataset.section === 'dashboard') {
+          dashboardSection.style.display = 'block';
+          settingsSection.classList.remove('active');
+        } else {
+          dashboardSection.style.display = 'none';
+          settingsSection.classList.add('active');
+        }
+      });
+    });
+
+    function updateWidgets() {
+      widgetProjects.style.display = toggleProjects.checked ? 'block' : 'none';
+      widgetTotals.style.display = toggleTotals.checked ? 'block' : 'none';
+    }
+
+    toggleProjects.addEventListener('change', updateWidgets);
+    toggleTotals.addEventListener('change', updateWidgets);
+
+    updateWidgets();
+  </script>
+</body>
+</html>
