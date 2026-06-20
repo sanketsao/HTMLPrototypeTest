@@ -1,0 +1,23 @@
+[
+  {
+    "id": "31067698-7762-4d62-b5d5-b3bafa365489",
+    "createdAt": "2026-06-19T23:09:33.997Z",
+    "status": "resolved",
+    "anchor": {
+      "selector": "body > div > header > div:nth-of-type(2) > button:nth-of-type(2)",
+      "tag": "button",
+      "text": "Settings"
+    },
+    "text": "Check Settings",
+    "author": "FromCEO",
+    "page": "/",
+    "replies": [
+      {
+        "id": "1f8d6914-1414-4504-8fcd-19cee328b1ff",
+        "author": "FromTango",
+        "text": "Got it. Will update it later",
+        "createdAt": "2026-06-19T23:10:55.983Z"
+      }
+    ]
+  }
+]
