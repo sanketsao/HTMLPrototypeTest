@@ -1,0 +1,15 @@
+[
+  {
+    "id": "9e59cef4-f0d5-4f20-beaa-980d3bfe3d37",
+    "createdAt": "2026-06-20T18:39:12.836Z",
+    "status": "open",
+    "anchor": {
+      "selector": "body > div > header > div:nth-of-type(1) > p:nth-of-type(1)",
+      "tag": "p",
+      "text": "Live prototype"
+    },
+    "text": "Welcome to myfeedback",
+    "author": "FromAuthor",
+    "page": "/"
+  }
+]

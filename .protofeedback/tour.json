@@ -1,0 +1,26 @@
+[
+  {
+    "id": "pf-1781980580555",
+    "anchor": {
+      "selector": "#widget-projects",
+      "tag": "article",
+      "text": "Agents Working on Projects Live view of agents assigned to c"
+    },
+    "title": "Agent Tracking1",
+    "body": "Agent Tracking on projects",
+    "order": 0,
+    "page": "/"
+  },
+  {
+    "id": "pf-1781980656640",
+    "anchor": {
+      "selector": "#widget-totals",
+      "tag": "article",
+      "text": "Total Agents by Time Hourly distribution of agent availabili"
+    },
+    "title": "Agent Tracking2",
+    "body": "Agent Tracking by Time",
+    "order": 1,
+    "page": "/"
+  }
+]
